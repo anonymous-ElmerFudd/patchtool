@@ -146,7 +146,7 @@ int __cdecl main(int argc, char *argv[])
 
 	g_bDebugModeEnabled = TRUE;
 	g_bMultiPatchEnabled = FALSE;
-	g_bPatchingEnabled = TRUE;
+	g_bPatchingEnabled = FALSE;
 	args_mask = 0x87;
 		
 	//

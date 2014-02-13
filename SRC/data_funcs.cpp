@@ -39,7 +39,7 @@ int find_data_in_buffer(u8* pInBuffer, uint32_t dwSizeOfBuffer, char* pszSearchS
 	uint32_t dwSizeOfMaskString = 0;
 	uint32_t dwSizeOfReplaceString = 0;
 	uint32_t dwSizeOfSearchData = 0;
-	uint32_t dwSizeOfReplaceData = 0;
+	uint32_t dwSizeOfReplaceData = 0;	
 	uint32_t num_blocks = 0;
 	uint32_t matches_found = 0;	
 	uint32_t i = 0;
@@ -103,8 +103,9 @@ int find_data_in_buffer(u8* pInBuffer, uint32_t dwSizeOfBuffer, char* pszSearchS
 		}
 
 		// iterate through the buffer, searching for the pattern
-		pCurrBuffPtr = pInBuffer;
-		for (i = 0; i < dwSizeOfBuffer; i++ )
+		// (search range is our 'buffer size' - 'search string len')
+		pCurrBuffPtr = pInBuffer;		
+		for (i = 0; i < (dwSizeOfBuffer -dwSizeOfSearchData); i++ )
 		{
 			// iterate through the 32-bit 'chunks', AND
 			// off the searc/data with the mask, and XOR
