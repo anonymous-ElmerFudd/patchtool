@@ -5,6 +5,16 @@
 //
 //
 //
+//
+//	@revision history
+//
+//  v1.0.1.0
+//
+//		-- optimized match operation, just to save
+//         a few unnecessary clock cyles!  
+//         (no need to AND both data and match block
+//          before the XOR, just do once after)
+//
 //  v1.0.0.0 -- initial release
 //
 //        
@@ -24,7 +34,7 @@
 
 /////////////////////////////////////////
 /// update for any changes to this code
-#define PATCHTOOL_VERSION	"1.0.0.0"
+#define PATCHTOOL_VERSION	"1.0.1.0"
 /////////////////////////////////////////
 
 ///#define TOOL_DEBUG_ENABLED 1

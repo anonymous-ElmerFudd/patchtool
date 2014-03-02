@@ -81,8 +81,9 @@ int find_data_in_buffer(u8* pInBuffer, uint32_t dwSizeOfBuffer, char* pszSearchS
 		dwSizeOfReplaceData = dwSizeOfReplaceString / 2;
 		num_blocks = dwSizeOfSearchData / DATA_PATTERN_ALIGNMENT;
 
-		// if our data is 'mis-aligned', tack on the extra 32-bit (4byte)
-		// block, and bump up the 'num_blocks' by 1
+		// if our data is 'mis-aligned', tack on the extra 'search' byte(s) (CC)
+		// and 'mask' byte(s) (00) needed to align at 32-bits, 
+		// and bump up the 'num_blocks' by 1
 		if ( (dwSizeOfSearchData % DATA_PATTERN_ALIGNMENT > 0) ) {
 			dwPadd = (DATA_PATTERN_ALIGNMENT - (dwSizeOfSearchData % DATA_PATTERN_ALIGNMENT));
 			for (i = 0; i < dwPadd; i++) {
@@ -105,7 +106,7 @@ int find_data_in_buffer(u8* pInBuffer, uint32_t dwSizeOfBuffer, char* pszSearchS
 		// iterate through the buffer, searching for the pattern
 		// (search range is our 'buffer size' - 'search string len')
 		pCurrBuffPtr = pInBuffer;		
-		for (i = 0; i < (dwSizeOfBuffer -dwSizeOfSearchData); i++ )
+		for (i = 0; i < (dwSizeOfBuffer - dwSizeOfSearchData); i++ )
 		{
 			// iterate through the 32-bit 'chunks', AND
 			// off the searc/data with the mask, and XOR
@@ -115,7 +116,7 @@ int find_data_in_buffer(u8* pInBuffer, uint32_t dwSizeOfBuffer, char* pszSearchS
 				pdwSearchBlock = (uint32_t*)(pSearchPattern+(sizeof(uint32_t)*j));
 				pdwDataBlock = (uint32_t*)(pCurrBuffPtr+(sizeof(uint32_t)*j));
 				pdwMaskBlock = (uint32_t*)(pMaskPattern+(sizeof(uint32_t)*j));				
-				if ( ((*pdwSearchBlock & *pdwMaskBlock) ^ (*pdwDataBlock & *pdwMaskBlock)) == 0 ) 			
+				if ( ((*pdwSearchBlock ^ *pdwDataBlock) & *pdwMaskBlock) == 0 ) 			
 					matches_found++;
 				else
 					break;
